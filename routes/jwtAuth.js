@@ -6,10 +6,8 @@ const validInfo = require("../middleware/validInfo");
 const jwtGenerator = require("../utils/jwtGenerator");
 const authorize = require("../middleware/authorize");
 
-//authorizeentication
-
 router.post("/register", validInfo, async (req, res) => {
-  const { patient_id, name, mob_no, dob, blood_grp, house_no, street, city, state, record_id, gender, username, password } = req.body;
+  const {  first_name, middle_name, last_name, mobile_number, phone_number, date_of_birth, blood_group, house_number, street, city, pincode, state, gender, username, password } = req.body;
 
   try {
     const user = await pool.query("SELECT * FROM patient WHERE username = $1", [
@@ -24,7 +22,7 @@ router.post("/register", validInfo, async (req, res) => {
     const bcryptPassword = await bcrypt.hash(password, salt);
 
     let newUser = await pool.query(
-      `INSERT INTO patient ( name, mob_no, dob, blood_grp, address, record_id, gender, username, password) VALUES ( '${name}', '${mob_no}', '${dob}', '${blood_grp}',('${house_no}', '${street}', '${city}', '${state}'), null, '${gender}', '${username}', '${bcryptPassword}') RETURNING *`
+      `INSERT INTO patient ( first_name, middle_name, last_name, mobile_number, phone_number, date_of_birth, blood_group, address, record_id, gender, username, password) VALUES ( '${first_name}', '${middle_name}', '${last_name}', '${mobile_number}', '${phone_number}', '${date_of_birth}', '${blood_group}',('${house_number}', '${street}', '${city}', '${pincode}', '${state}'), null, '${gender}', '${username}', '${bcryptPassword}') RETURNING *`
 
     );
       console.log(newUser.rows[0].patient_id);
